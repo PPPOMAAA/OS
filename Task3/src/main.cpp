@@ -57,11 +57,9 @@ int main() {
         while (running) {
             usleep(3000000); // 3 с
             processManager->handle_subprocesses(*counter);
-            counter->set_value(counter->get_value());
-    }
-    return nullptr;
-};
-
+        }
+        return nullptr;
+    };
 
     std::pair<Logger*, Counter*> logger_args = {&logger, &counter};
     std::pair<ProcessManager*, Counter*> process_args = {&processManager, &counter};
