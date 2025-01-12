@@ -5,6 +5,7 @@ cmake ..
 cmake --build .
 if [ -f ./hello_world ]; then
     echo "Запуск программы..."
+    clear
     ./hello_world
 else
     echo "Ошибка: hello_world не найден."
