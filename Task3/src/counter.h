@@ -1,10 +1,15 @@
 #ifndef COUNTER_H
 #define COUNTER_H
 
+#ifdef _WIN32
+#include <windows.h>
+#else
 #include <sys/mman.h>
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <unistd.h>
+#endif
+
 #include <stdexcept>
 
 class Counter {
@@ -18,8 +23,14 @@ public:
 
 private:
     const char* shared_name;
+
+#ifdef _WIN32
+    HANDLE shm_handle;
+    int* shared_counter;
+#else
     int shm_fd;
     int* shared_counter;
+#endif
 };
 
 #endif

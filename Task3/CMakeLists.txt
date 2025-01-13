@@ -1,21 +1,11 @@
 cmake_minimum_required(VERSION 3.10)
-
 project(CrossPlatformLogger)
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 
-# Add main source file
-set(SOURCES
+add_executable(prog
     src/main.cpp
     src/logger.cpp
     src/counter.cpp
     src/process_manager.cpp
 )
-
-# Add include directories
-include_directories(src)
-
-# Define the executable
-add_executable(prog ${SOURCES})
-
-target_link_libraries(prog pthread)
