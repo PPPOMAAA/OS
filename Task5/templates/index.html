@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Temperature Data</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 20px;
+        }
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+        .graph-container {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin: 10px;
+            text-align: center;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input[type="text"] {
+            width: 200px;
+            padding: 5px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+        button {
+            padding: 8px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #current_temperature {
+          font-size: 1.2em;
+          margin-top: 10px;
+        }
+    </style>
+    <script>
+        function fetchCurrentTemperature() {
+            fetch('/get_current_temperature')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        alert("Error: " + data.error);
+                    } else {
+                        document.getElementById('current_temperature').textContent =
+                            `Latest Temperature: ${data.temperature} °C (at ${data.date})`;
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        function fetchGraphs() {
+            const start_date = document.getElementById("start_date").value || "1970-01-01 00:00:00";
+            const end_date = document.getElementById("end_date").value || "2026-01-01 00:00:00";
+            const params = new URLSearchParams({
+                start_date: start_date,
+                end_date: end_date
+            });
+
+            fetch(`/get_graphs?${params.toString()}`)
+                .then(response => response.json())
+                .then(data => {
+                    for (const [graphId, imgBase64] of Object.entries(data)) {
+                        const imgElement = document.getElementById(graphId);
+                        if (imgElement) {
+                            if (imgBase64.includes("No data available") || imgBase64.includes("No graph data available")) {
+                                imgElement.alt = imgBase64;
+                                imgElement.src = "";
+                            } else {
+                                imgElement.src = "data:image/png;base64," + imgBase64;
+                                imgElement.alt = graphId;
+                            }
+                        } else {
+                            console.error(`Element with id ${graphId} not found`);
+                        }
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        }
+    </script>
+</head>
+<body>
+    <h1>Temperature Data</h1>
+
+    <button onclick="fetchCurrentTemperature()">Get Current Temperature</button>
+    <div id="current_temperature"></div>
+
+    <h2>Get Graphs</h2>
+    <label for="start_date">Start Date:</label>
+    <input type="text" id="start_date" placeholder="YYYY-MM-DD HH:MM:SS">
+    <label for="end_date">End Date:</label>
+    <input type="text" id="end_date" placeholder="YYYY-MM-DD HH:MM:SS">
+    <button onclick="fetchGraphs()">Get Graphs</button>
+
+    <div class="container">
+        <div class="graph-container">
+            <h3>Current Data</h3>
+            <img id="data_current_graph" alt="Current Data Graph">
+        </div>
+        <div class="graph-container">
+            <h3>Hourly Data</h3>
+            <img id="data_hour_graph" alt="Hourly Data Graph">
+        </div>
+        <div class="graph-container">
+            <h3>Daily Data</h3>
+            <img id="data_day_graph" alt="Daily Data Graph">
+        </div>
+    </div>
+</body>
+</html>
