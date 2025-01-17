@@ -1,0 +1,66 @@
+/* Стили для кнопок */
+QPushButton {
+    background-color: #4CAF50; /* Зеленый */
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    border-radius: 4px;
+}
+
+QPushButton:hover {
+    background-color: #45a049;
+}
+
+/* Стили для графиков */
+QChartView {
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+}
+
+QChart {
+    background-color: white;
+}
+
+QLineSeries {
+    color: #008000; /* Темно-зеленый */
+    width: 2;
+}
+
+/* Стили для осей */
+QChart QAxis {
+    grid-line-color: #d0d0d0;
+    minor-grid-line-color: #e0e0e0;
+    axis-line-color: black;
+    tick-color: black;
+    label-color: black;
+}
+
+QChart QDateTimeAxis {
+    format: "yyyy-MM-dd HH:mm:ss";
+}
+
+/* Стили для групп (QGroupBox) */
+QGroupBox {
+    border: 1px solid gray;
+    margin-top: 1ex;
+    border-radius: 5px; /* Скругление углов */
+    padding: 10px;        /* Отступы внутри группы */
+}
+
+QGroupBox::title {
+    subcontrol-origin: margin;
+    subcontrol-position: top center;
+    padding: 0 5px;
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #e0e0e0, stop: 1 #d0d0d0);
+    /* border-radius: 3px;  Скругление углов заголовка */
+}
+
+/* Стили для меток (QLabel) */
+QLabel{
+    font-size: 14px;
+}
